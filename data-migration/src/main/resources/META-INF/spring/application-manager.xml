@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 配置业务查询manager -->
+    <bean id="serviceImportManager" class="com.es.datamigration.manager.ServiceImportManager"/>
+    <bean id="userCollectManager" class="com.es.datamigration.manager.article.ArticleCollectManager"/>
+    <bean id="userSyncToEsManager" class="com.es.datamigration.manager.article.ArticleSyncToEsManager"/>
+    <bean id="elasticSearchIndexManager" class="com.es.datamigration.manager.elasticsearch.ElasticSearchIndexManager"/>
+
+    <!-- 配置公共查询manager -->
+    <bean id="elasticSearchInitClientManager" class="com.es.stone.manager.ElasticSearchInitClientManager"/>
+    <bean id="elasticSearchDumpManager" class="com.es.stone.manager.ElasticSearchDumpManager"/>
+
+    <!-- 配置线程池 -->
+    <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 线程池维护线程的最少数量 -->
+        <property name="corePoolSize" value="10" />
+        <!-- 线程池维护线程所允许的空闲时间 10分钟-->
+        <property name="keepAliveSeconds" value="600" />
+        <!-- 线程池维护线程的最大数量 -->
+        <property name="maxPoolSize" value="10" />
+        <!-- 线程池所使用的缓冲队列 -->
+        <property name="queueCapacity" value="5000" />
+
+        <property name="rejectedExecutionHandler">
+            <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+        </property>
+    </bean>
+
+</beans>

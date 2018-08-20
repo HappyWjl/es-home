@@ -1,0 +1,6 @@
+server:
+  port: 8083
+
+es:
+  client:
+    servers: localhost:9200

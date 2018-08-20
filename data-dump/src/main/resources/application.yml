@@ -1,0 +1,12 @@
+server:
+  port: 8081
+
+es:
+  client:
+    servers: localhost:9200
+
+canal:
+  client:
+    servers: 127.0.0.1:11111
+    cluser: false
+    destination: articlesubscibe

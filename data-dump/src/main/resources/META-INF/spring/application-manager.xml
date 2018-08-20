@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans   http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 配置业务查询manager -->
+    <bean id="serviceImportManager" class="com.es.datadump.manager.ServiceImportManager"/>
+    <bean id="userCollectManager" class="com.es.datadump.manager.article.ArticleCollectManager"/>
+    <bean id="elasticSearchIndexManager" class="com.es.datadump.manager.elasticsearch.ElasticSearchIndexManager"/>
+
+    <!-- 配置公共查询manager -->
+    <bean id="elasticSearchInitClientManager" class="com.es.stone.manager.ElasticSearchInitClientManager"/>
+    <bean id="elasticSearchDumpManager" class="com.es.stone.manager.ElasticSearchDumpManager"/>
+
+    <!-- 配置canalmanager -->
+    <bean id="canalInitClientManager" class="com.es.datadump.manager.canal.CanalInitClientManager"/>
+
+</beans>

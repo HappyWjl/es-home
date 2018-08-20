@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd">
+	<bean id="localStatFilter" class="com.alibaba.druid.filter.stat.StatFilter">
+		<property name="slowSqlMillis" value="10000" />
+		<property name="logSlowSql" value="true" />
+		<property name="mergeSql" value="true" />
+	</bean>
+	<!-- 配置数据源信息 -->
+	<bean id="localDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		  destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="${local.jdbc.url}"/>
+		<property name="username" value="${local.jdbc.username}"/>
+		<property name="password" value="${local.jdbc.password}"/>
+		<!--<property name="filters" value="config" />-->
+		<!--<property name="connectionProperties" value="config.decrypt=true"/>-->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="localStatFilter"/>
+			</list>
+		</property>
+	</bean>
+	<!-- 配置ibatis映射信息 -->
+	<bean id="localSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="localDataSource"/>
+		<property name="mapperLocations" value="classpath:com/es/datamigration/mapper/*.xml"/>
+		<property name="typeAliasesPackage" value="com.es.datamigration.model"/>
+		<property name="configLocation" value="classpath:config/mybatis-config.xml"/>
+	</bean>
+
+	<bean id="localMapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.es.datamigration.mapper" />
+		<property name="sqlSessionTemplateBeanName" value="localSqlSession"/>
+	</bean>
+
+	<bean id="localSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="localSqlSessionFactory"/>
+	</bean>
+
+	<bean id="localTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="localDataSource"/>
+	</bean>
+
+	<bean id="localTransactionTemplate"  class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="localTransactionManager" />
+	</bean>
+
+</beans>
