@@ -52,7 +52,8 @@ public class AbstractCanalCoreManager {
     private ElasticSearchDumpManager elasticSearchDumpManager;
     private ServiceImportManager serviceImportManager;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private SimpleDateFormat sdfdate = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
     static {
         context_format = SEP + "****************************************************" + SEP;
@@ -170,27 +171,20 @@ public class AbstractCanalCoreManager {
     /**
      * 数据同步顶层方法，加入事物判断。
      *
-     * @param entrys
+     * @param entries
      * @throws Exception
      */
-    protected void syncEntry(List<Entry> entrys) throws Exception {
+    protected void syncEntry(List<Entry> entries) throws Exception {
         //开固定数量的线程跑
         //1、创建固定线程池。
         ExecutorService syncEntryThreadPool = Executors.newFixedThreadPool(5);
         int i = 0;
-        List<Entry> subentrys = new ArrayList<>();
-        for (Entry entry : entrys) {
-            if (subentrys.size() < 4) {//由于存在主子订单，因此尽量让相邻的对象顺序执行
-                subentrys.add(entry);
-            } else {
-                subentrys.add(entry);
-                syncEntryThreadPool.submit(new SyncDataThread(i, subentrys));
-                subentrys = new ArrayList<>();
-            }
+        List<Entry> subEntries = new ArrayList<>();
+        for (Entry entry : entries) {
+            subEntries.add(entry);
+            syncEntryThreadPool.submit(new SyncDataThread(i, subEntries));
+            subEntries = new ArrayList<>();
             i++;
-        }
-        if (subentrys.size() < 4) {//不足10条直接执行。
-            syncEntryThreadPool.submit(new SyncDataThread(i, subentrys));
         }
 
         try {
@@ -234,18 +228,29 @@ public class AbstractCanalCoreManager {
                             colMap.put(column.getName(), sdf.parse(column.getValue()));//时间戳单独处理存入ES
                         }
                     } catch (Exception e) {
-                        logger.error("数据库日期字段映射异常:key: {},value: {} ", column.getName(), column.getValue(), e);
+                        logger.error("数据库timestamp / datetime字段映射异常:key: {},value: {} ", column.getName(), column.getValue(), e);
                         errorLog = true;
                     }
                 }
             } else if ("date".equals(column.getMysqlType())) {
                 if (StringUtils.isNotBlank(column.getValue())) {//一定要在此处加判断，如果为空，则不走下面的else分支，不组装date字段，否则es报错。
                     try {
-                        synchronized (sdfdate) {
-                            colMap.put(column.getName(), sdfdate.parse(column.getValue()));//时间戳单独处理存入ES
+                        synchronized (sdfDate) {
+                            colMap.put(column.getName(), sdfDate.parse(column.getValue()));//时间戳单独处理存入ES
                         }
                     } catch (Exception e) {
-                        logger.error("数据库日期字段映射异常: key: {},value: {}", column.getName(), column.getValue(), e);
+                        logger.error("数据库date字段映射异常: key: {},value: {}", column.getName(), column.getValue(), e);
+                        errorLog = true;
+                    }
+                }
+            }else if("time".equals(column.getMysqlType())){
+                if(StringUtils.isNotBlank(column.getValue())) {//一定要在此处加判断，如果为空，则不走下面的else分支，不组装time字段，否则es报错。
+                    try {
+                        synchronized (sdfTime){
+                            colMap.put(column.getName(), sdfTime.parse(column.getValue()));//时间戳单独处理存入ES
+                        }
+                    } catch (Exception e) {
+                        logger.error("数据库time字段映射异常: key: {},value: {}",column.getName(),column.getValue(), e);
                         errorLog = true;
                     }
                 }
@@ -317,7 +322,6 @@ public class AbstractCanalCoreManager {
                                         String.valueOf(entry.getHeader().getExecuteTime()), String.valueOf(delayTime)});
                     }
 
-//                continue;
                 }
 
                 //解析mysql逐行数据
@@ -339,13 +343,11 @@ public class AbstractCanalCoreManager {
 
                     if (eventType == EventType.QUERY || rowChage.getIsDdl()) {
                         logger.info(" sql ----> " + rowChage.getSql() + SEP);
-//                    continue;
                     }
 
                     //开启线程逐行同步数据
                     if (rowChage.getRowDatasList().size() > 0) {
                         ExecutorService syncRowDataThreadPool = Executors.newFixedThreadPool(5);
-                        Map colMap = null;
                         List<RowData> rowDataList = new ArrayList<>();
                         int i = 0;
                         for (RowData rowData : rowChage.getRowDatasList()) {
@@ -391,22 +393,16 @@ public class AbstractCanalCoreManager {
 
         @Override
         public Integer call() throws Exception {
-
             Map colMap;
             for (RowData rowData : rowDataList) {
                 if (eventType == EventType.DELETE) {
                     colMap = analysisColumn(rowData.getBeforeColumnsList());
                     elasticSearchDumpManager.deleteRecordToEs(colMap, entry.getHeader().getSchemaName() + "." + entry.getHeader().getTableName());
-                } else if (eventType == EventType.INSERT) {
-                    colMap = analysisColumn(rowData.getAfterColumnsList());
-                    serviceImportManager.getDateMap(colMap, entry.getHeader().getSchemaName() + "." + entry.getHeader().getTableName());
-
                 } else {
                     colMap = analysisColumn(rowData.getAfterColumnsList());
                     serviceImportManager.getDateMap(colMap, entry.getHeader().getSchemaName() + "." + entry.getHeader().getTableName());
                 }
             }
-
             return threadId;
         }
 

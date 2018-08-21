@@ -23,9 +23,6 @@ public class ElasticsearchEnvInitRunner implements CommandLineRunner {
 
     private final static Logger logger = LoggerFactory.getLogger(ElasticsearchEnvInitRunner.class);
 
-    @Value("${es.client.servers}")
-    private String servers;
-
     @Autowired
     private ElasticSearchIndexManager elasticSearchIndexManager;
 

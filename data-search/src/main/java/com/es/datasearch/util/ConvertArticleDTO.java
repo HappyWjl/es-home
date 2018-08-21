@@ -1,4 +1,4 @@
-package com.es.datasearch.utils;
+package com.es.datasearch.util;
 
 import org.apache.commons.lang3.StringUtils;
 

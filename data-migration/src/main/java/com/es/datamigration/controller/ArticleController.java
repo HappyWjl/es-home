@@ -37,10 +37,10 @@ public class ArticleController {
     }
     
     /**
-     * 查看同步进度
+     * 检查ES索引状态
      * @return
      */
-    @RequestMapping("/createindex")
+    @RequestMapping("/checkindex")
     public boolean createIndex() {
     	logger.info("-------------------------------------检查ES索引状态---------------------------------------------");
 		boolean flag = elasticSearchIndexManager.checkIndex("db_search.tb_article");//特殊索引配置入口,可直接追加

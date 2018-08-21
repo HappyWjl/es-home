@@ -1,7 +1,6 @@
 package com.es.datadump.manager;
 
 import com.alibaba.fastjson.JSON;
-import com.es.datadump.manager.article.ArticleCollectManager;
 import com.es.stone.manager.ElasticSearchDumpManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +23,9 @@ public class ServiceImportManager {
      * @return
      */
     public Map getDateMap(Map colMap, String index) {
-        if ("place.tb_place".equals(index)) {
-            placeListInfoDump(colMap, index);
+        if ("db_search.tb_ts".equals(index)) {
+            //判断是哪种特殊索引，根据需求，处理数据，再 存入/更新 到es
+            txListInfoDump(colMap, index);
         } else {
             elasticSearchDumpManager.insertOrUpdateToEs(colMap, index);
         }
@@ -34,16 +34,15 @@ public class ServiceImportManager {
     }
 
     /**
-     * 根据place表同步数据
+     * 根据特殊业务表同步数据
      *
      * @param colMap
      * @param index
      */
-    protected void placeListInfoDump(Map colMap, String index) {
-
-        logger.info("ServiceImportManager.placeListInfoDump colMap:{}", JSON.toJSONString(colMap));
-
-        elasticSearchDumpManager.insertOrUpdateToEs(colMap, index + "_search");
+    protected void txListInfoDump(Map colMap, String index) {
+        logger.info("ServiceImportManager.txListInfoDump colMap:{}", JSON.toJSONString(colMap));
+        //此处可进行特殊逻辑处理，根据需求来
+        elasticSearchDumpManager.insertOrUpdateToEs(colMap, index);
     }
 
 }

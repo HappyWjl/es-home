@@ -2,7 +2,7 @@ package com.es.datasearch.manager.elasticsearch;
 
 import com.alibaba.fastjson.JSON;
 import com.es.datasearch.param.QueryArticleSearchVO;
-import com.es.datasearch.utils.ConvertArticleDTO;
+import com.es.datasearch.util.ConvertArticleDTO;
 import com.es.stone.enums.EsStatus;
 import com.es.stone.manager.ElasticSearchInitClientManager;
 import org.elasticsearch.action.search.SearchRequest;
@@ -131,6 +131,7 @@ public class ArticleSearchManager {
         if (queryArticleSearchVO.createEndTime != null) {
             bq.filter(QueryBuilders.rangeQuery("create_time").format("yyyy-MM-dd").lte(queryArticleSearchVO.createEndTime).timeZone("Asia/Shanghai"));
         }
+        searchSourceBuilder.query(bq);
 
         searchSourceBuilder.sort(new FieldSortBuilder("create_time").order(SortOrder.DESC));//按文章创建时间倒序排列。
         return searchSourceBuilder;
