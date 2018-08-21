@@ -1,16 +1,15 @@
 package com.es.datasearch.result;
 
-import com.es.datasearch.model.TbArticleDO;
-
+import java.io.Serializable;
 import java.util.List;
 
-public class ArticleResultByEsDO {
+public class ArticleResultByEsDO implements Serializable {
 
     private int pageNo;
 
     private int pageSize;
 
-    private List<TbArticleDO> articleList;
+    private List<TbArticleDOByEs> articleList;
 
     private String esStatus;
 
@@ -32,11 +31,11 @@ public class ArticleResultByEsDO {
         this.pageSize = pageSize;
     }
 
-    public List<TbArticleDO> getArticleList() {
+    public List<TbArticleDOByEs> getArticleList() {
         return articleList;
     }
 
-    public void setArticleList(List<TbArticleDO> articleList) {
+    public void setArticleList(List<TbArticleDOByEs> articleList) {
         this.articleList = articleList;
     }
 
@@ -55,5 +54,4 @@ public class ArticleResultByEsDO {
     public void setRecordSize(int recordSize) {
         this.recordSize = recordSize;
     }
-
 }

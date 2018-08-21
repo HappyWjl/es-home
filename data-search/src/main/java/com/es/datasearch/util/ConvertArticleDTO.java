@@ -22,10 +22,10 @@ public class ConvertArticleDTO {
     public static Map convertDate(Map mapDTO) throws ParseException {
 
         if (StringUtils.isNotBlank(mapDTO.get("create_time") == null ? "" : (String) mapDTO.get("create_time"))) {
-            mapDTO.put("create_time", sdflocalsimple.format(sdfutc.parse((String) mapDTO.get("create_time"))));
+            mapDTO.put("create_time", sdflocal.format(sdfutc.parse((String) mapDTO.get("create_time"))));
         }
 
-        if (StringUtils.isNotBlank(mapDTO.get("end_time") == null ? "" : (String) mapDTO.get("update_time"))) {
+        if (StringUtils.isNotBlank(mapDTO.get("update_time") == null ? "" : (String) mapDTO.get("update_time"))) {
             mapDTO.put("update_time", sdflocal.format(sdfutc.parse((String) mapDTO.get("update_time"))));
         }
         return mapDTO;
