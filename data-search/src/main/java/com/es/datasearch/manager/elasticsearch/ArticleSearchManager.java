@@ -2,18 +2,23 @@ package com.es.datasearch.manager.elasticsearch;
 
 import com.alibaba.fastjson.JSON;
 import com.es.datasearch.param.QueryArticleSearchVO;
+import com.es.datasearch.util.ConvertArray;
 import com.es.datasearch.util.ConvertArticleDTO;
 import com.es.stone.enums.EsStatus;
 import com.es.stone.manager.ElasticSearchInitClientManager;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.geo.GeoPoint;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,20 +105,25 @@ public class ArticleSearchManager {
         BoolQueryBuilder bq = QueryBuilders.boolQuery();
 
         if (!StringUtils.isEmpty(queryArticleSearchVO.keyWords)) {
-            //设置是否关键字查询条件
-            bq.must(QueryBuilders.multiMatchQuery(queryArticleSearchVO.keyWords, "title","content"));
+            //设置是否关键字查询条件，并增加了ik分词器，字段的分词器也需要在建索引时进行设置
+            bq.must(QueryBuilders.multiMatchQuery(queryArticleSearchVO.keyWords, "title", "content").analyzer("ik_smart").operator(Operator.AND).fuzziness(Fuzziness.AUTO));
         }
         if (queryArticleSearchVO.id > 0) {
             //设置是否主键id查询条件
             bq.must(QueryBuilders.termQuery("id", queryArticleSearchVO.id));
         }
         if (!StringUtils.isEmpty(queryArticleSearchVO.title)) {
-            //设置是否文章标题查询条件
-            bq.must(QueryBuilders.termQuery("title", queryArticleSearchVO.title));
+            //设置是否文章标题查询条件，并增加了ik分词器，字段的分词器也需要在建索引时进行设置
+            bq.must(QueryBuilders.matchQuery("title", queryArticleSearchVO.title).analyzer("ik_smart").operator(Operator.AND).fuzziness(Fuzziness.AUTO));
         }
         if (!StringUtils.isEmpty(queryArticleSearchVO.content)) {
-            //设置是否文章内容查询条件
-            bq.must(QueryBuilders.termQuery("content", queryArticleSearchVO.content));
+            //设置是否文章内容查询条件，并增加了ik分词器，字段的分词器也需要在建索引时进行设置
+            bq.must(QueryBuilders.matchQuery("content", queryArticleSearchVO.content).analyzer("ik_smart").operator(Operator.AND).fuzziness(Fuzziness.AUTO));
+        }
+        if (!StringUtils.isEmpty(queryArticleSearchVO.state)) {
+            //设置是否文章状态查询条件，类似SQL中的 select * from tb_article where state in (1,2);
+            //queryArticleSearchVO.state 需要转成int数组
+            bq.must(QueryBuilders.termsQuery("state", ConvertArray.convertArray(queryArticleSearchVO.state)));
         }
         if (queryArticleSearchVO.createStartTime != null) {
             bq.filter(QueryBuilders.rangeQuery("create_time").format("yyyy-MM-dd").gte(queryArticleSearchVO.createStartTime).timeZone("Asia/Shanghai"));
@@ -122,7 +132,16 @@ public class ArticleSearchManager {
             bq.filter(QueryBuilders.rangeQuery("create_time").format("yyyy-MM-dd").lte(queryArticleSearchVO.createEndTime).timeZone("Asia/Shanghai"));
         }
         searchSourceBuilder.query(bq);
-        searchSourceBuilder.sort(new FieldSortBuilder("create_time").order(SortOrder.DESC));//按文章创建时间倒序排列。
+
+        if (queryArticleSearchVO.sortType == 1) {
+            //当排序规则传入为1时，按照距离正序排序
+            searchSourceBuilder.sort(new GeoDistanceSortBuilder("location",
+                    new GeoPoint().parseFromLatLon(queryArticleSearchVO.latitude + "," + queryArticleSearchVO.longitude))
+                    .order(SortOrder.ASC));
+        } else if (queryArticleSearchVO.sortType == 0) {
+            //当排序规则传入为0时，按照时间倒序排序
+            searchSourceBuilder.sort(new FieldSortBuilder("create_time").order(SortOrder.DESC));//按文章创建时间倒序排列。
+        }
         return searchSourceBuilder;
     }
 

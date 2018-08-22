@@ -17,6 +17,9 @@ public class ConvertUserUtil {
         map.put("id", tbArticleDO.getId());
         map.put("title", tbArticleDO.getTitle());
         map.put("content", tbArticleDO.getContent());
+        map.put("state", tbArticleDO.getState());
+        map.put("latitude", tbArticleDO.getLatitude());
+        map.put("longitude", tbArticleDO.getLongitude());
         map.put("create_time", tbArticleDO.getCreateTime());
         map.put("update_time", tbArticleDO.getUpdateTime());
         LOGGER.info("TbArticleDO.convertToMap:{}", JSON.toJSONString(map));

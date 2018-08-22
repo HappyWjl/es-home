@@ -7,7 +7,6 @@
 
     <!-- 配置业务查询manager -->
     <bean id="serviceImportManager" class="com.es.datamigration.manager.ServiceImportManager"/>
-    <bean id="userCollectManager" class="com.es.datamigration.manager.article.ArticleCollectManager"/>
     <bean id="userSyncToEsManager" class="com.es.datamigration.manager.article.ArticleSyncToEsManager"/>
     <bean id="elasticSearchIndexManager" class="com.es.datamigration.manager.elasticsearch.ElasticSearchIndexManager"/>
 

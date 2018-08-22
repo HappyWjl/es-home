@@ -27,12 +27,13 @@ public class ElasticSearchIndexManager {
     protected CreateIndexRequest convertTbArticle(String index) {
         CreateIndexRequest createIndexRequest = new CreateIndexRequest();
         createIndexRequest.index(index + "_v1");//同步模块创建的索引，默认版本都为v1，同步时，使用别名进行同步
-        createIndexRequest.alias(new Alias(index));
+        createIndexRequest.alias(new Alias(index));//创建别名
         createIndexRequest.settings(Settings.builder().put("number_of_shards", 7).put("max_result_window", 100000));
-//        createIndexRequest.mapping("doc", "title", "type=text,fielddata=true,analyzer=ik_smart",
-//                "content", "type=text,fielddata=true,analyzer=ik_smart",
-//                "create_time", "type=date",
-//                "update_time", "type=date");
+        createIndexRequest.mapping("doc",
+                "title", "type=text,fielddata=true,analyzer=ik_smart",
+                "content", "type=text,fielddata=true,analyzer=ik_smart",
+                "key_words", "type=text,fielddata=true,analyzer=ik_smart",
+                "location", "type=geo_point");//设置分词、设置经纬度字段
         return createIndexRequest;
     }
 
