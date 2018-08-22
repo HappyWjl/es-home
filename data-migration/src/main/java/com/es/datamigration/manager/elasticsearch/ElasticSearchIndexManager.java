@@ -30,10 +30,9 @@ public class ElasticSearchIndexManager {
         createIndexRequest.alias(new Alias(index));//创建别名
         createIndexRequest.settings(Settings.builder().put("number_of_shards", 7).put("max_result_window", 100000));
         createIndexRequest.mapping("doc",
-                "title", "type=text,fielddata=true,analyzer=ik_smart",
-                "content", "type=text,fielddata=true,analyzer=ik_smart",
-                "key_words", "type=text,fielddata=true,analyzer=ik_smart",
-                "location", "type=geo_point");//设置分词、设置经纬度字段
+                "title", "type=text,fielddata=true,analyzer=ik_smart",//设置 title 分词
+                "content", "type=text,fielddata=true,analyzer=ik_smart", //设置 content 分词
+                "location", "type=geo_point");//设置 location 经纬度字段，用于距离排序
         return createIndexRequest;
     }
 
