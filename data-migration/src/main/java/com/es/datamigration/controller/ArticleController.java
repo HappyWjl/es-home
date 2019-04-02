@@ -1,10 +1,10 @@
 
 package com.es.datamigration.controller;
 
-import com.es.datamigration.manager.elasticsearch.ElasticSearchIndexManager;
+import com.es.stone.manager.ElasticSearchIndexManager;
 import com.es.datamigration.manager.article.ArticleSyncToEsManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.es.stone.constant.EsConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
  * 文章搜索相关
  *
  */
+@Slf4j
 @RestController
 @RequestMapping("/api/article")
 public class ArticleController {
-
-	private static final Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
     @Autowired
     private ArticleSyncToEsManager articleSyncToEsManager;
@@ -30,21 +29,26 @@ public class ArticleController {
      * 开启同步数据，将article表中数据同步到ES
      * @return
      */
-    @GetMapping("/articletoes")
+    @GetMapping("/articleToEs")
     public String syncPlaceToEs() {
-    	String result = articleSyncToEsManager.syncDataControl();
-        return result;
+        return articleSyncToEsManager.syncDataControl();
     }
     
     /**
      * 检查ES索引状态
      * @return
      */
-    @RequestMapping("/checkindex")
+    @RequestMapping("/checkIndex")
     public boolean createIndex() {
-    	logger.info("-------------------------------------检查ES索引状态---------------------------------------------");
-		boolean flag = elasticSearchIndexManager.checkIndex("db_search.tb_article");//特殊索引配置入口,可直接追加
-		logger.info("-------------------------------------ES索引状态检查完成---------------------------------------------");
+        boolean flag = Boolean.FALSE;
+        try {
+            log.info("-------------------------------------检查ES索引状态---------------------------------------------");
+            flag = elasticSearchIndexManager.checkIndex(EsConstant.EsIndexName.DB_SEARCH_TB_ARTICLE);//特殊索引配置入口,可直接追加
+            log.info("-------------------------------------ES索引状态检查完成---------------------------------------------");
+
+        } catch (Exception e) {
+            log.info("checkIndex is error!", e);
+        }
         return flag;
     }
 

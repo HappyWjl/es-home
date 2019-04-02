@@ -6,7 +6,9 @@ import java.io.Serializable;
  * Created by 海浩 on 2015/3/29.
  */
 public class ResultSupport implements Serializable {
+
     private static final long serialVersionUID = -2235152751651905167L;
+
     private boolean success = true;
     private String errorMsg;
     private int errorCode;

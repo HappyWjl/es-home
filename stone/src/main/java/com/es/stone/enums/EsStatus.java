@@ -1,6 +1,7 @@
 package com.es.stone.enums;
 
 public enum EsStatus {
+
 	SUCESS("SUCESS",0),
 	PARAM_ERROR("PARAM_ERROR",1);
 	

@@ -2,15 +2,13 @@ package com.es.datadump.manager.canal;
 
 import com.alibaba.otter.canal.client.CanalConnector;
 import com.alibaba.otter.canal.client.CanalConnectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.net.InetSocketAddress;
 
+@Slf4j
 public class CanalInitClientManager {
-
-    private final static Logger logger = LoggerFactory.getLogger(CanalInitClientManager.class);
 
     @Value("${canal.client.servers}")
     private String servers;
@@ -24,8 +22,8 @@ public class CanalInitClientManager {
     private CanalConnector canalConnector = null;
 
     public final CanalConnector getCanalConnector() {
-        logger.info("--------------canalServer:" + servers);
-        logger.info("--------------destination:" + destination);
+        log.info("--------------canalServer:" + servers);
+        log.info("--------------destination:" + destination);
         if (cluser) {
             canalConnector = CanalConnectors.newClusterConnector(servers, destination, "", "");
         } else {

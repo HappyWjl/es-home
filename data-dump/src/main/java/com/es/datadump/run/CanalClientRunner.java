@@ -5,8 +5,7 @@ import com.es.datadump.manager.canal.CanalCoreManager;
 import com.es.datadump.manager.canal.CanalInitClientManager;
 import com.es.datadump.manager.ServiceImportManager;
 import com.es.stone.manager.ElasticSearchDumpManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,11 +16,10 @@ import org.springframework.stereotype.Component;
  *
  * @author Administrator
  */
+@Slf4j
 @Component
 //@Order(3)
 public class CanalClientRunner implements CommandLineRunner {
-
-    private final static Logger logger = LoggerFactory.getLogger(CanalClientRunner.class);
 
     @Autowired
     private CanalInitClientManager canalInitClientManager;
@@ -33,8 +31,8 @@ public class CanalClientRunner implements CommandLineRunner {
     private ServiceImportManager serviceImportManager;
 
     @Override
-    public void run(String... args) throws Exception {
-        logger.info("-------------------------------------canal服务启动----------------------------------------------");
+    public void run(String... args) {
+        log.info("-------------------------------------canal服务启动----------------------------------------------");
         // 根据ip，直接创建链接，无HA的功能
         CanalConnector canalConnector = canalInitClientManager.getCanalConnector();
 
@@ -47,12 +45,12 @@ public class CanalClientRunner implements CommandLineRunner {
 
             public void run() {
                 try {
-                    logger.info("## stop the canal client");
+                    log.info("## stop the canal client");
                     canalManager.stop();
                 } catch (Throwable e) {
-                    logger.warn("##something goes wrong when stopping canal:", e);
+                    log.warn("##something goes wrong when stopping canal:", e);
                 } finally {
-                    logger.info("## canal client is down.");
+                    log.info("## canal client is down.");
                 }
             }
 

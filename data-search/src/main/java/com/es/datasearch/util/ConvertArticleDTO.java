@@ -1,5 +1,6 @@
 package com.es.datasearch.util;
 
+import com.es.stone.constant.EsConstant;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
@@ -21,12 +22,12 @@ public class ConvertArticleDTO {
 
     public static Map convertDate(Map mapDTO) throws ParseException {
 
-        if (StringUtils.isNotBlank(mapDTO.get("create_time") == null ? "" : (String) mapDTO.get("create_time"))) {
-            mapDTO.put("create_time", sdflocal.format(sdfutc.parse((String) mapDTO.get("create_time"))));
+        if (StringUtils.isNotBlank(mapDTO.get(EsConstant.SqlWord.CREATE_TIME) == null ? "" : (String) mapDTO.get(EsConstant.SqlWord.CREATE_TIME))) {
+            mapDTO.put(EsConstant.SqlWord.CREATE_TIME, sdflocal.format(sdfutc.parse((String) mapDTO.get(EsConstant.SqlWord.CREATE_TIME))));
         }
 
-        if (StringUtils.isNotBlank(mapDTO.get("update_time") == null ? "" : (String) mapDTO.get("update_time"))) {
-            mapDTO.put("update_time", sdflocal.format(sdfutc.parse((String) mapDTO.get("update_time"))));
+        if (StringUtils.isNotBlank(mapDTO.get(EsConstant.SqlWord.UPDATE_TIME) == null ? "" : (String) mapDTO.get(EsConstant.SqlWord.UPDATE_TIME))) {
+            mapDTO.put(EsConstant.SqlWord.UPDATE_TIME, sdflocal.format(sdfutc.parse((String) mapDTO.get(EsConstant.SqlWord.UPDATE_TIME))));
         }
         return mapDTO;
     }

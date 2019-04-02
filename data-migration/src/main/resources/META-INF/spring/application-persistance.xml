@@ -7,6 +7,7 @@
 		<property name="logSlowSql" value="true" />
 		<property name="mergeSql" value="true" />
 	</bean>
+
 	<!-- 配置数据源信息 -->
 	<bean id="localDataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		  destroy-method="close">
@@ -22,6 +23,7 @@
 			</list>
 		</property>
 	</bean>
+
 	<!-- 配置ibatis映射信息 -->
 	<bean id="localSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="localDataSource"/>

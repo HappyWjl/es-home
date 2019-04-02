@@ -7,7 +7,9 @@ import java.util.List;
  *
  */
 public class BasePageResult<T> extends ResultSupport {
+
     private static final long serialVersionUID = 7378807577314788084L;
+
     protected int pageNo = 1;
     protected int pageSize;
     protected int totalCount;

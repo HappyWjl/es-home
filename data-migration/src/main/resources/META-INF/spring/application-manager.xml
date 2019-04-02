@@ -8,7 +8,7 @@
     <!-- 配置业务查询manager -->
     <bean id="serviceImportManager" class="com.es.datamigration.manager.ServiceImportManager"/>
     <bean id="userSyncToEsManager" class="com.es.datamigration.manager.article.ArticleSyncToEsManager"/>
-    <bean id="elasticSearchIndexManager" class="com.es.datamigration.manager.elasticsearch.ElasticSearchIndexManager"/>
+    <bean id="elasticSearchIndexManager" class="com.es.stone.manager.ElasticSearchIndexManager"/>
 
     <!-- 配置公共查询manager -->
     <bean id="elasticSearchInitClientManager" class="com.es.stone.manager.ElasticSearchInitClientManager"/>

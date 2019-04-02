@@ -1,6 +1,6 @@
-package com.es.datasearch.util;
+package com.es.stone.converter;
 
-public class ConvertArray {
+public class ArrayConverter {
 
     public static int[] convertArray(String str) {
         char[] arr;

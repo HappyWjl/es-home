@@ -3,7 +3,9 @@ package com.es.stone.result;
 import java.io.Serializable;
 
 public class BaseErrorCode implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	private int errorCode;
 	private String errorMsg;
 
