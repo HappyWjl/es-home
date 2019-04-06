@@ -203,7 +203,7 @@ public class CheckController {
     private boolean checkIndexType(String[] columns, String[] indexTypes) {
         for (int i = 0; i < indexTypes.length; i++) {
             //检查表中字段类型，是否匹配索引类型
-            if (!IndexTypeEnum.getByIndexType(indexTypes[i]).equals(columnMap.get(columns[i])))
+            if (!IndexTypeEnum.getSqlTypeByIndexType(indexTypes[i]).equals(columnMap.get(columns[i])))
                 return Boolean.FALSE;
         }
         return Boolean.TRUE;

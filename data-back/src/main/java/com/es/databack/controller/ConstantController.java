@@ -34,9 +34,6 @@ public class ConstantController {
     @Value("${local.jdbc.password}")
     private String password;
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
-
     /**
      * 获取数据库名称
      *

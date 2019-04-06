@@ -5,21 +5,32 @@ import java.util.List;
 
 public enum IndexTypeEnum {
 
-    GEO("geo","DOUBLE"),
-    IK_SMART("ik_smart","VARCHAR");
+    GEO("geo","DOUBLE", "type=geo_point"),
+    IK_SMART("ik_smart","VARCHAR", "type=text,fielddata=true,analyzer=ik_smart");
 
     private final String indexType;
     private final String sqlType;
+    private final String indexStr;
 
-    IndexTypeEnum(String indexType, String sqlType) {
+    IndexTypeEnum(String indexType, String sqlType, String indexStr) {
         this.indexType = indexType;
         this.sqlType = sqlType;
+        this.indexStr = indexStr;
     }
 
-    public static String getByIndexType(String indexType) {
+    public static String getSqlTypeByIndexType(String indexType) {
         for(IndexTypeEnum indexTypeEnum : values()) {
             if(indexTypeEnum.indexType.equals(indexType)) {
                 return indexTypeEnum.sqlType;
+            }
+        }
+        return "";
+    }
+
+    public static String getIndexStrByIndexType(String indexType) {
+        for(IndexTypeEnum indexTypeEnum : values()) {
+            if(indexTypeEnum.indexType.equals(indexType)) {
+                return indexTypeEnum.indexStr;
             }
         }
         return "";
