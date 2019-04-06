@@ -23,7 +23,7 @@ import java.util.Objects;
 @RequestMapping("/api/check/admin")
 public class CheckController {
 
-    private Map<String, String> columnMap = new HashMap<>();
+    private static Map<String, String> columnMap = new HashMap<>();
 
     @Value("${local.jdbc.url}")
     private String url;

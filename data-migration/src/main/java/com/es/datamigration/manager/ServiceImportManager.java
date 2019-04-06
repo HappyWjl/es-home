@@ -23,7 +23,7 @@ public class ServiceImportManager {
      * @return
      * @throws Exception
      */
-    public Map getDateMap(Map colMap, String index) throws Exception {
+    public Map getDateMap(Map colMap, String index) {
         if (EsConstant.EsIndexName.DB_SEARCH_TB_TS.equals(index)) {
             //判断是哪种特殊索引，根据需求，处理数据，再 存入/更新 到es
             txListInfoDump(colMap, index);

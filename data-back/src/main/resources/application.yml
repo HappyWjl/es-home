@@ -13,6 +13,47 @@ canal:
 
 local:
   jdbc:
+    driver: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/db_search?autoReconnect=true&amp;useUnicode=true&amp;characterset=utf8mb4
     username: root
     password: root
+
+#自动生成代码配置#
+
+#生成的包名
+basePackage: com.easy.autocoding
+
+#输出路径，不填写生成到桌面
+outRoot:
+
+#需要移除的表名前缀,使用逗号进行分隔多个前缀,可以没值
+#比如表名: tb_article，想将表名前缀移除，填入值: tb_
+tableRemovePrefixes: tb_
+
+#数据库类型映射
+CHAR: String
+VARCHAR: String
+LONGVARCHAR: String
+TINYINT: Integer
+TINYINT UNSIGNED: Integer
+NUMERIC: Double
+DECIMAL: java.math.BigDecimal
+BIGINT: Long
+BIGINT UNSIGNED: Long
+REAL: Double
+SMALLINT: Integer
+INTEGER: Integer
+INTEGER UNSIGNED: Integer
+INT: Integer
+INT UNSIGNED: Integer
+DATE: java.util.Date
+TIME: java.util.Date
+DATETIME: java.util.Date
+TIMESTAMP: java.util.Date
+BIT: Boolean
+
+
+
+
+
+
