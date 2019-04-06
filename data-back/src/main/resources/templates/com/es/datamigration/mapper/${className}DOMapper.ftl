@@ -1,6 +1,6 @@
-package ${package}.dao;
+package ${package}.mapper;
 
-import ${package}.model.${className}Model;
+import ${package}.model.${className}DO;
 import ${package}.model.Page;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -17,32 +17,32 @@ public interface ${className}DOMapper{
 	/**
 	* 分页查询固定参数
 	*/
-	List<${className}Model> queryPage${className}(@Param("page")Page page, @Param("entity")${className}Model entity, @Param("queryFields")List queryFields);
+	List<${className}DO> queryPage${className}(@Param("page")Page page, @Param("entity")${className}DO entity, @Param("queryFields")List queryFields);
 
 	/**
 	* 查询固定参数
 	*/
-	List<${className}Model> queryList${className}(@Param("entity")${className}Model entity, @Param("queryFields")List queryFields);
+	List<${className}DO> queryList${className}(@Param("entity")${className}DO entity, @Param("queryFields")List queryFields);
 
 	/**
 	* 查询总数量
 	*/
-	Long queryCount${className}(@Param("entity")${className}Model entity);
+	Long queryCount${className}(@Param("entity")${className}DO entity);
 	
 	/**
 	* 查询单个实体
 	*/
-	${className}Model query${className}ById(@Param("id")String id,  @Param("queryFields")List queryFields);
+	${className}DO query${className}ById(@Param("id")String id,  @Param("queryFields")List queryFields);
 	
 	/**
 	* 新增
 	*/
-	int add${className}(${className}Model entity);
+	int add${className}(${className}DO entity);
 	
 	/**
 	* 修改
 	*/
-	int update${className}(${className}Model entity);
+	int update${className}(${className}DO entity);
 	
 	/**
 	* 批量删除
