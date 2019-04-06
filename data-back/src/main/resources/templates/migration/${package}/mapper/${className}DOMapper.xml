@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="${package}.dao.${className}Dao">
+    <mapper namespace="${package}.dao.${className}Dao">
 	<!-- 返回值映射map -->
-	<resultMap id="${classNameLower}Mapper" type="${package}.model.${className}Model">
+	<resultMap id="${classNameLower}Mapper" type="${package}.model.${className}DO">
 		<#list table.columns as column>
 			<result property="${column.name}" column="${column.dbName}" />
 		</#list>
 	</resultMap>
-	
+
 	<!-- 查询数量公共sql -->
 	<sql id="count_Tail">
 		select count(1) from ${table.dbName} record
 	</sql>
-	
+
 	<!-- 分页公共sql -->
 	<sql id="pagination_tail">
 	  limit ${ r"#{page.pageOffset} , #{page.pageSize}"}
@@ -22,13 +22,13 @@
 
 	<!-- 查询字段公共sql -->
 	<sql id="selectAllColumns">
-	    SELECT 
+	    SELECT
 	    <if test="queryFields != null ">
 	 	     <trim prefix="" suffix="" suffixOverrides=",">
 		        <foreach collection="queryFields" item="fi" index="index">
 		          ${ r"${fi},"}
 		        </foreach>
-		      </trim> 	
+		      </trim>
 	  	</if>
 	    <if test="queryFields == null ">
 	  		<![CDATA[
@@ -39,9 +39,9 @@
 	  	</if>
 	     FROM ${table.dbName} record
 	</sql>
-	
+
 	<sql id="where_fragement">
-		<where> 
+		<where>
 			<if test="entity!=null">
 				<#list table.columns as column>
 					<if test = ${"\""}${ r"entity." + column.name + r" != null and entity." +column.name + r" != ''" }${"\""}>
@@ -51,7 +51,7 @@
 			</if>
 		</where>
 	</sql>
-	
+
 	<sql id="time_sort">
 		order by createtime desc 
 	</sql>
@@ -64,16 +64,16 @@
 		<if test="page!=null">
 			<include refid="pagination_tail" />
 		</if>
-		
+
 	</select>
-	
+
 	<!-- 不分页查询数据集合-->
 	<select id="queryList${className}" resultMap="${classNameLower}Mapper" >
 		<include refid="selectAllColumns"/>
 		<include refid="where_fragement" />
 		<include refid="time_sort" />
 	</select>
-	
+
 	<!-- 查询总数量 -->
 	<select id="queryCount${className}" resultType="long">
 		<include refid="count_Tail"></include>
@@ -83,10 +83,10 @@
 	<!-- 查询单个实体 -->
 	<select id="query${className}ById" resultMap="${classNameLower}Mapper" >
 		<include refid="selectAllColumns"/>
-		 where 
+		 where
 		 record.${primaryKey} = ${r"#{id}"}
 	</select>
-	
+
 	<!-- 新增列处理 -->
 	<sql id="sql_add_columns">
 		<trim suffixOverrides=",">
@@ -101,11 +101,11 @@
 		<#list table.columns as column>
 				<if test="${column.name} != null">${ r"#{" + column.name + r"}" },</if>
 		</#list>
-		</trim>		
+		</trim>
 	</sql>
-	
+
 	<!-- 新增 -->
-	<insert id="add${className}" parameterType="${package}.model.${className}Model">
+	<insert id="add${className}" parameterType="${package}.model.${className}DO">
 		insert into ${table.dbName}(
 			<include refid="sql_add_columns"/>
 		)values(
@@ -114,8 +114,8 @@
 	</insert>
 
 	<!-- 编辑 -->
-	<update id="update${className}" parameterType="${package}.model.${className}Model">
-		update ${table.dbName} record 
+	<update id="update${className}" parameterType="${package}.model.${className}DO">
+		update ${table.dbName} record
 			<set>
 			<#list table.columns as column>
 				<#if column.name != '${modelId}' >
@@ -127,10 +127,10 @@
 			</set>
 		where ${primaryKey} = ${r'#{'+"${modelId}"+r'}'}
 	</update>
-	
+
 	<!-- 删除 -->
 	<delete id="remove${className}ByIds" parameterType="java.util.List">
-		delete from ${table.dbName} 
+		delete from ${table.dbName}
 			where ${primaryKey} in
 			<foreach collection="list" open="(" separator="," close=")" item="code">
 				${r"#{code}"}
@@ -138,10 +138,10 @@
 	</delete>
 
 	<delete id="remove${className}ById">
-		delete from ${table.dbName} 
+		delete from ${table.dbName}
 		<if test=" id != null and id != ''">
 			where ${primaryKey} = ${r"#{id}"}
 		</if>
 	</delete>
-	
+
 </mapper>
