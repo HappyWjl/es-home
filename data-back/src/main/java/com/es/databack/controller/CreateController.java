@@ -265,7 +265,7 @@ public class CreateController {
             if (f.getParentFile().compareTo(tdf) != 0) {
                 parentDir = f.getParent().split("templates")[1];
             }
-            cfg.setClassForTemplateLoading(this.getClass(), "/templates/migration" + parentDir);
+            cfg.setClassForTemplateLoading(this.getClass(), "/templates" + parentDir);
 
             Template template = cfg.getTemplate(f.getName());
             template.setEncoding("UTF-8");

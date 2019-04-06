@@ -21,14 +21,14 @@ local:
 #自动生成代码配置#
 
 #生成的包名
-basePackage: com.easy.autocoding
+basePackage: com.es.datamigration
 
 #输出路径，不填写生成到桌面
 outRoot:
 
 #需要移除的表名前缀,使用逗号进行分隔多个前缀,可以没值
 #比如表名: tb_article，想将表名前缀移除，填入值: tb_
-tableRemovePrefixes: tb_
+tableRemovePrefixes:
 
 #数据库类型映射
 CHAR: String
