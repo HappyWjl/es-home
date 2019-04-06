@@ -1,6 +1,6 @@
 package ${package}.util;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import ${package}.model.${className}DO;
@@ -18,7 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 public class Convert${className}Util {
 
 	public static Map convertToMap(${className}DO ${classNameLower}DO) {
-		return ConvertUtil.objectToMap(${classNameLower}DO);
+        try {
+            return ConvertUtil.objectToMap(${classNameLower}DO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new HashMap();
 	}
 	
 }

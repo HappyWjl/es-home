@@ -128,14 +128,15 @@ public class CreateController {
      */
     @ApiOperation(value = "生成同步代码")
     @GetMapping("/createMigrationCode")
-    public BaseResult createMigrationCode(@RequestParam String tableName,
+    public BaseResult createMigrationCode(@RequestParam String dbName,
+                                          @RequestParam String tableName,
                                           @RequestParam String tableRemark) {
         log.info("createIndex tableName:{} tableRemark:{}", tableName, tableRemark);
 
         //获取配置信息
         //解析数据表
         try {
-            gen(tableName, tableRemark, "id", "Id");
+            gen(dbName, tableName, tableRemark, "id", "Id");
         } catch (Exception e) {
             log.error("createMigrationCode is error!", e);
             return BaseResult.buildSuccessResult(Boolean.FALSE);
@@ -213,11 +214,12 @@ public class CreateController {
      * <p>Discription:[生成映射文件和实体类]</p>
      * Created on 2019年4月4日
      *
+     * @param dbName          要声称映射文件和实体类的库名称
      * @param tableName       要声称映射文件和实体类的表名称
      * @param tableDescAndCat 表描述
      * @throws Exception
      */
-    public void gen(String tableName, String tableDescAndCat, String id, String modelId) throws Exception {
+    public void gen(String dbName, String tableName, String tableDescAndCat, String id, String modelId) throws Exception {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_21);
 
         //当输出地址为null时，文件放到桌面
@@ -243,6 +245,8 @@ public class CreateController {
         Map<String, Object> root = new HashMap<>();
         Table t = this.parseTable(tableName);
         t.setTableDesc(tableDescAndCat.split("_")[0]);
+        root.put("dbName", dbName);
+        root.put("tableName", tableName);
         root.put("table", t);
         root.put("className", t.getNameUpper());
         root.put("classNameLower", t.getName());

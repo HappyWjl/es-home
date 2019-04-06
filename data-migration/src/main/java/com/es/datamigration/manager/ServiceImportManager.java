@@ -60,4 +60,14 @@ public class ServiceImportManager {
         elasticSearchDumpManager.insertOrUpdateToEs(colMap, index);
     }
 
+    /**
+     * 同步数据公用方法
+     *
+     * @param colMap
+     * @param index
+     */
+    protected void listInfoDump(Map colMap, String index) {
+        elasticSearchDumpManager.insertOrUpdateToEs(colMap, index);
+    }
+
 }
