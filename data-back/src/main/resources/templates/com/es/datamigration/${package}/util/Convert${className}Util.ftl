@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import ${package}.model.Page;
-import ${package}.model.${className}Model;
+import ${package}.model.${className}DO;
 import com.es.stone.util.ConvertUtil;
 import lombok.extern.slf4j.Slf4j;
 

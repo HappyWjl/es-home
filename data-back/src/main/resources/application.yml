@@ -21,7 +21,7 @@ local:
 #自动生成代码配置#
 
 #生成的包名
-basePackage: com.es.datamigration
+basePackage:
 
 #输出路径，不填写生成到桌面
 outRoot:

@@ -221,10 +221,10 @@ public class CreateController {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_21);
 
         //当输出地址为null时，文件放到桌面
-        if (StringUtils.isNullOrEmpty(outRoot)) {
-            File desktopDir = FileSystemView.getFileSystemView() .getHomeDirectory();
-            outRoot = desktopDir.getAbsolutePath() + "/Desktop/EasyCodeDemo";
-        }
+//        if (StringUtils.isNullOrEmpty(outRoot)) {
+//            File desktopDir = FileSystemView.getFileSystemView() .getHomeDirectory();
+//            outRoot = desktopDir.getAbsolutePath() + "/Desktop/EasyCodeDemo";
+//        }
 
         outRoot = System.getProperty("user.dir") + "/data-migration/src/main/java";
 
@@ -257,7 +257,7 @@ public class CreateController {
         root.put("email", "820155406@qq.com");
         root.put("website", "得码网");
 
-        String templateDir = this.getClass().getClassLoader().getResource("templates/migration").getPath();
+        String templateDir = this.getClass().getClassLoader().getResource("templates/com/es/datamigration").getPath();
 
         File tdf = new File(templateDir);
         List<File> files = FileHelper.findAllFile(tdf);
@@ -281,10 +281,6 @@ public class CreateController {
             log.debug("已生成文件：" + outRoot + parentFileDir + "/" + file);
             System.out.println("已生成文件：" + outRoot + parentFileDir + "/" + file);
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(System.getProperty("user.dir") + "/data-migration/src/main/java");
     }
 
 }
