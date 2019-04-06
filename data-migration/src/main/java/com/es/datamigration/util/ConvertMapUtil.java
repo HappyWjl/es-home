@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class ConvertUserUtil {
+public class ConvertMapUtil {
 
     public static Map convertToMap(TbArticleDO tbArticleDO) {
         Map<String, Object> map = new HashMap<>();
