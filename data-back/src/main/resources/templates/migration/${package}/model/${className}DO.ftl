@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @version 1.0 
  * Copyright (c) ${year} ${website}
  */
-public class ${className}Model  implements Serializable {
+public class ${className}DO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Param;
  * @version 1.0 
  * Copyright (c) ${year} ${website}
  */
-public interface ${className}Dao{
+public interface ${className}DOMapper{
 	
 	/**
 	* 分页查询固定参数

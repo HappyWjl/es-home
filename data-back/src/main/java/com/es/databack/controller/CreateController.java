@@ -4,11 +4,11 @@ import com.es.databack.common.Column;
 import com.es.databack.common.Table;
 import com.es.databack.enums.IndexTypeEnum;
 import com.es.databack.enums.SqlTypeEnum;
-import com.es.databack.util.CamelCaseUtils;
 import com.es.databack.util.FileHelper;
 import com.es.stone.constant.EsConstant;
 import com.es.stone.manager.ElasticSearchDumpManager;
 import com.es.stone.result.BaseResult;
+import com.es.stone.util.CamelCaseUtils;
 import com.mysql.jdbc.StringUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -226,6 +226,8 @@ public class CreateController {
             outRoot = desktopDir.getAbsolutePath() + "/Desktop/EasyCodeDemo";
         }
 
+        outRoot = System.getProperty("user.dir") + "/data-migration/src/main/java";
+
         //获取当前日期
         SimpleDateFormat sm_date = new SimpleDateFormat("yyyy年MM月dd日");
         SimpleDateFormat sm_year = new SimpleDateFormat("yyyy年");
@@ -279,6 +281,10 @@ public class CreateController {
             log.debug("已生成文件：" + outRoot + parentFileDir + "/" + file);
             System.out.println("已生成文件：" + outRoot + parentFileDir + "/" + file);
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(System.getProperty("user.dir") + "/data-migration/src/main/java");
     }
 
 }
