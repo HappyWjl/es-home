@@ -255,7 +255,7 @@ public class CreateController {
         root.put("email", "820155406@qq.com");
         root.put("website", "得码网");
 
-        String templateDir = this.getClass().getClassLoader().getResource("templates").getPath();
+        String templateDir = this.getClass().getClassLoader().getResource("templates/migration").getPath();
 
         File tdf = new File(templateDir);
         List<File> files = FileHelper.findAllFile(tdf);
@@ -265,7 +265,7 @@ public class CreateController {
             if (f.getParentFile().compareTo(tdf) != 0) {
                 parentDir = f.getParent().split("templates")[1];
             }
-            cfg.setClassForTemplateLoading(this.getClass(), "/templates" + parentDir);
+            cfg.setClassForTemplateLoading(this.getClass(), "/templates/migration" + parentDir);
 
             Template template = cfg.getTemplate(f.getName());
             template.setEncoding("UTF-8");
