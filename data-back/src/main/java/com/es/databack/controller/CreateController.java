@@ -9,7 +9,6 @@ import com.es.stone.constant.EsConstant;
 import com.es.stone.manager.ElasticSearchDumpManager;
 import com.es.stone.result.BaseResult;
 import com.es.stone.util.CamelCaseUtils;
-import com.mysql.jdbc.StringUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import io.swagger.annotations.Api;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

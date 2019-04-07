@@ -19,6 +19,7 @@ import java.util.Map;
  * Copyright (c) ${year} ${website}
  */
 @Slf4j
+@Component
 public class ${className}ToEsManager {
 
 	@Autowired
