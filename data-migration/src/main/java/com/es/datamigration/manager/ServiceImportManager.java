@@ -6,10 +6,12 @@ import com.es.stone.constant.EsConstant;
 import com.es.stone.manager.ElasticSearchDumpManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 @Slf4j
+@Component
 public class ServiceImportManager {
 
     @Autowired

@@ -1,7 +1,6 @@
 package com.es.stone.manager;
 
 import com.es.stone.constant.EsConstant;
-import com.es.stone.manager.ElasticSearchDumpManager;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
