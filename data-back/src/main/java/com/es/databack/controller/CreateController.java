@@ -9,6 +9,7 @@ import com.es.stone.constant.EsConstant;
 import com.es.stone.manager.ElasticSearchDumpManager;
 import com.es.stone.result.BaseResult;
 import com.es.stone.util.CamelCaseUtils;
+import com.mysql.jdbc.StringUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import io.swagger.annotations.Api;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -220,13 +222,13 @@ public class CreateController {
     public void gen(String dbName, String tableName, String tableDescAndCat, String id, String modelId) throws Exception {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_21);
 
-        //当输出地址为null时，文件放到桌面
-//        if (StringUtils.isNullOrEmpty(outRoot)) {
-//            File desktopDir = FileSystemView.getFileSystemView() .getHomeDirectory();
-//            outRoot = desktopDir.getAbsolutePath() + "/Desktop/EasyCodeDemo";
-//        }
-
-        outRoot = System.getProperty("user.dir") + "/data-migration/src/main/java";
+        //当输出地址为null时，文件放到固定项目目录下，否则输出到桌面指定文件夹下
+        if (StringUtils.isNullOrEmpty(outRoot)) {
+            outRoot = System.getProperty("user.dir") + "/data-migration/src/main/java";
+        } else {
+            File desktopDir = FileSystemView.getFileSystemView() .getHomeDirectory();
+            outRoot = desktopDir.getAbsolutePath() + outRoot;
+        }
 
         //获取当前日期
         SimpleDateFormat sm_date = new SimpleDateFormat("yyyy年MM月dd日");
