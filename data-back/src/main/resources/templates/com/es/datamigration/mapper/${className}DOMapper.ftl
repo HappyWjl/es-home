@@ -15,6 +15,6 @@ public interface ${className}DOMapper{
 	/**
 	* 查询所有数据
 	*/
-	List<${className}DO> queryList${className} ();
+	List<${className}DO> selectAll ();
 
 }

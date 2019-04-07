@@ -31,7 +31,7 @@
 	</sql>
 
 	<!-- 不分页查询数据集合-->
-	<select id="queryList${className}" resultMap="${classNameLower}Mapper" >
+	<select id="selectAll" resultMap="${classNameLower}Mapper" >
 		<include refid="selectAllColumns"/>
 	</select>
 

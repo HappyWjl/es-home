@@ -3,7 +3,7 @@ package ${package}.manager.${classNameLower};
 import ${package}.manager.ServiceImportManager;
 import ${package}.mapper.${className}DOMapper;
 import ${package}.model.${className}DO;
-import ${package}.util.ConvertMapUtil;
+import ${package}.util.Convert${className}Util;
 import com.es.stone.constant.EsConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +34,12 @@ public class ${className}ToEsManager {
 		List<${className}DO> ${classNameLower}DOList = ${classNameLower}DOMapper.selectAll();
 
 		for (${className}DO ${classNameLower}DO : ${classNameLower}DOList) {
-			Map colMap = ConvertMapUtil.convertToMap(${classNameLower}DO);
+			Map colMap = Convert${className}Util.convertToMap(${classNameLower}DO);
 			colMap.put(EsConstant.ES_KEY, colMap.get(EsConstant.ID).toString());
 			try {
-				serviceImportManager.getDateMap(colMap, ${dbName} + "." + ${tableName});
+				serviceImportManager.getDateMap(colMap, "${dbName}." + "${tableName}");
 			} catch (Exception e) {
-				log.error("同步数据异常，ID: {} , e: {}", tbArticleDO.getId(), e);
+				log.error("同步数据异常，ID: {} , e: {}", ${classNameLower}DO.getId(), e);
 			}
 		}
 		return "success";
