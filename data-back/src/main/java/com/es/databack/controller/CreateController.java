@@ -130,13 +130,14 @@ public class CreateController {
     @GetMapping("/createMigrationCode")
     public BaseResult createMigrationCode(@RequestParam String dbName,
                                           @RequestParam String tableName,
-                                          @RequestParam String tableRemark) {
-        log.info("createIndex tableName:{} tableRemark:{}", tableName, tableRemark);
+                                          @RequestParam String tableDescAndCat,
+                                          @RequestParam String namespace) {
+        log.info("createIndex tableName:{} tableDescAndCat:{}", tableName, tableDescAndCat);
 
         //获取配置信息
         //解析数据表
         try {
-            gen(dbName, tableName, tableRemark, "id", "Id");
+            gen(dbName, tableName, tableDescAndCat, namespace, "id", "Id");
         } catch (Exception e) {
             log.error("createMigrationCode is error!", e);
             return BaseResult.buildSuccessResult(Boolean.FALSE);
@@ -219,12 +220,12 @@ public class CreateController {
      * @param tableDescAndCat 表描述
      * @throws Exception
      */
-    public void gen(String dbName, String tableName, String tableDescAndCat, String id, String modelId) throws Exception {
+    public void gen(String dbName, String tableName, String tableDescAndCat, String namespace, String id, String modelId) throws Exception {
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_21);
 
         //当输出地址为null时，文件放到固定项目目录下，否则输出到桌面指定文件夹下
         if (StringUtils.isNullOrEmpty(outRoot)) {
-            outRoot = System.getProperty("user.dir") + "/data-migration/src/main/java";
+            outRoot = System.getProperty("user.dir");
         } else {
             File desktopDir = FileSystemView.getFileSystemView() .getHomeDirectory();
             outRoot = desktopDir.getAbsolutePath() + outRoot;
@@ -261,7 +262,8 @@ public class CreateController {
         root.put("email", "820155406@qq.com");
         root.put("website", "得码网");
 
-        String templateDir = this.getClass().getClassLoader().getResource("templates/com/es/datamigration").getPath();
+        String temPath = "templates/" + namespace; //+ "/src/main/java/com/es/datamigration";
+        String templateDir = this.getClass().getClassLoader().getResource(temPath).getPath();
 
         File tdf = new File(templateDir);
         List<File> files = FileHelper.findAllFile(tdf);
