@@ -72,6 +72,7 @@ public class CamelCaseUtils {
         System.out.println(CamelCaseUtils.toCamelCase("iso_certified_staff"));
         System.out.println(CamelCaseUtils.toCamelCase("certified_staff_"));
         System.out.println(CamelCaseUtils.toCamelCase("_i_s_o_certified_staff"));
+        System.out.println(CamelCaseUtils.toUnderlineName("updateTime"));
     }
 
 }

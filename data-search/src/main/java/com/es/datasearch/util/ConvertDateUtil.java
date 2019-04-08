@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class ConvertArticleDTO {
+public class ConvertDateUtil {
 
     private static SimpleDateFormat sdflocal = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
     private static SimpleDateFormat sdflocalsimple = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);

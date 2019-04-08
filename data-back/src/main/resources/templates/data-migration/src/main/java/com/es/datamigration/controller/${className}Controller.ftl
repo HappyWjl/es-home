@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /** 
- * <p>Description: [${table.tableDesc}搜索]</p>
+ * <p>Description: [${table.tableDesc}历史数据同步]</p>
  * Created on ${date}
  * @author  <a href="mailto: ${email}">${author}</a>
  * @version 1.0 
  * Copyright (c) ${year} ${website}
  */
-@Api("${className} API")
+@Api("${className} 历史数据同步 API")
 @Slf4j
 @RestController
 @RequestMapping("/api/${classNameLower}")

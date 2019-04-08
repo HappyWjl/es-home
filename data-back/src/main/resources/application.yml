@@ -21,7 +21,7 @@ local:
 #自动生成代码配置#
 
 #生成的包名
-basePackage: com.es.datamigration
+basePackage: com.es.
 
 #输出路径，当输出地址为null时，文件放到固定项目目录下，否则输出到桌面指定文件夹下
 outRoot:

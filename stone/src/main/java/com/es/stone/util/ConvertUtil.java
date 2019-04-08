@@ -23,7 +23,7 @@ public class ConvertUtil {
             }
             Method getter = property.getReadMethod();
             Object value = getter != null ? getter.invoke(obj) : null;
-            map.put(CamelCaseUtils.toCamelCase(key), value);
+            map.put(CamelCaseUtils.toUnderlineName(key), value);
         }
         return map;
     }

@@ -1,10 +1,10 @@
-package com.es.datasearch.manager.elasticsearch;
+package com.es.datasearch.manager.tbArticle;
 
 import com.alibaba.fastjson.JSON;
 import com.es.datasearch.param.QueryArticleSearchVO;
 import com.es.datasearch.result.ResultByEsDO;
 import com.es.stone.converter.ArrayConverter;
-import com.es.datasearch.util.ConvertArticleDTO;
+import com.es.datasearch.util.ConvertDateUtil;
 import com.es.stone.constant.EsConstant;
 import com.es.stone.enums.EsStatus;
 import com.es.stone.manager.ElasticSearchInitClientManager;
@@ -23,7 +23,6 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
-import org.elasticsearch.search.sort.ScoreSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -80,11 +79,11 @@ public class ArticleSearchManager {
 
             for (SearchHit hit : hits) {
                 Map recordMap = hit.getSourceAsMap();
-                ConvertArticleDTO.convertDate(recordMap);
+                ConvertDateUtil.convertDate(recordMap);
                 articleList.add(recordMap);
             }
         } catch (Exception e) {
-            log.error("queryArticleList search from elasticsearch error!" + searchRequest.toString(), e);
+            log.error("queryArticleList search from tbArticle error!" + searchRequest.toString(), e);
         }
         return resultByEsDO.builder()
                 .recordSize(articleList.size())
@@ -180,7 +179,7 @@ public class ArticleSearchManager {
 
                 Map recordMap = hit.getSourceAsMap();
                 try {
-                    ConvertArticleDTO.convertDate(recordMap);
+                    ConvertDateUtil.convertDate(recordMap);
                     list.add(recordMap);
                 } catch (ParseException e) {
                     e.printStackTrace();

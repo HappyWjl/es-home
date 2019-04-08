@@ -51,4 +51,13 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /**
+     * 删除字符串中 横线
+     * @param param
+     * @return
+     */
+    public static String replaceLine(String param) {
+        return param.replaceAll("-","");
+    }
+
 }

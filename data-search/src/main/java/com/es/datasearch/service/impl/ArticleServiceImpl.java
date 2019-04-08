@@ -1,6 +1,6 @@
 package com.es.datasearch.service.impl;
 
-import com.es.datasearch.manager.elasticsearch.ArticleSearchManager;
+import com.es.datasearch.manager.tbArticle.ArticleSearchManager;
 import com.es.datasearch.param.QueryArticleSearchVO;
 import com.es.datasearch.result.ResultByEsDO;
 import com.es.datasearch.service.ArticleService;

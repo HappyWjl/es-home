@@ -33,6 +33,8 @@ import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.es.databack.util.StringUtil.replaceLine;
+
 /**
  * 生成相关
  */
@@ -254,7 +256,7 @@ public class CreateController {
         root.put("primaryKey", id);
         root.put("modelId", modelId);
         root.put("modelIdFirstUpper", buffer);
-        root.put("package", basePackage);
+        root.put("package", basePackage + replaceLine(namespace));
         root.put("date", sm_date.format(new Date()));
         root.put("year", sm_year.format(new Date()));
 
@@ -262,7 +264,7 @@ public class CreateController {
         root.put("email", "820155406@qq.com");
         root.put("website", "得码网");
 
-        String temPath = "templates/" + namespace; //+ "/src/main/java/com/es/datamigration";
+        String temPath = "templates/" + namespace;
         String templateDir = this.getClass().getClassLoader().getResource(temPath).getPath();
 
         File tdf = new File(templateDir);
