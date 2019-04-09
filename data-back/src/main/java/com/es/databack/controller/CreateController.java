@@ -9,6 +9,7 @@ import com.es.stone.constant.EsConstant;
 import com.es.stone.manager.ElasticSearchDumpManager;
 import com.es.stone.result.BaseResult;
 import com.es.stone.util.CamelCaseUtils;
+import com.es.stone.util.CustomizationClassLoader;
 import com.mysql.jdbc.StringUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -34,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static com.es.databack.util.StringUtil.replaceLine;
+import static com.es.stone.util.Test.compilerJava;
 
 /**
  * 生成相关
@@ -269,7 +272,8 @@ public class CreateController {
 
         File tdf = new File(templateDir);
         List<File> files = FileHelper.findAllFile(tdf);
-
+        File[] ff = new File[files.size()];
+        List<File> fAll = new ArrayList<>();
         for (File f : files) {
             String parentDir = "";
             if (f.getParentFile().compareTo(tdf) != 0) {
@@ -289,6 +293,23 @@ public class CreateController {
             log.debug("已生成文件：" + outRoot + parentFileDir + "/" + file);
             System.out.println("已生成文件：" + outRoot + parentFileDir + "/" + file);
         }
+
+//        File nf = new File(outRoot + "/" + namespace + "/src/main");
+//        fAll.addAll(FileHelper.findAllFile(nf));
+//
+//        ff = fAll.toArray(new File [fAll.size()]);
+//
+//        CustomizationClassLoader.classPath = outRoot + "/" + namespace;
+//        compilerJava(outRoot, namespace, ff);
+//
+//        CustomizationClassLoader classLoader = new CustomizationClassLoader();
+//
+//        if (ff.length > 0) {
+//            for (File file : ff) {
+//                classLoader.loadClass(file.getPath());
+//            }
+//        }
+
     }
 
 }

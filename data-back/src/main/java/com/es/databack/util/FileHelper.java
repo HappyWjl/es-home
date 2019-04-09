@@ -20,12 +20,19 @@ public class FileHelper {
         if (file.listFiles().length > 0) {
             for (File f : file.listFiles()) {
                 if (f.isFile()) {
-                    files.add(f);
+                    String fileName = f.getName();
+                    String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+                    if (!fileName.equals("DataSearchApplication.java") && (suffix.equals("ftl") || suffix.equals("java") || suffix.equals("xml"))) {
+                        files.add(f);
+                    } else if (!fileName.equals("DataSearchApplication.class") && suffix.equals("class")) {
+                        files.add(f);
+                    }
                 } else {
                     files.addAll(findAllFile(f));
                 }
             }
         }
+
         return files;
     }
 
