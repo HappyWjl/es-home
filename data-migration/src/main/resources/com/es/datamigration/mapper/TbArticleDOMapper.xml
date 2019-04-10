@@ -16,10 +16,17 @@
     id, title, content, state, latitude, longitude, create_time, update_time
   </sql>
 
-    <select id="selectAll" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List" />
-        from tb_article
-    </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List" />
+      from tb_article
+  </select>
+
+  <select id="selectByPage" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_article
+    LIMIT #{skip}, #{limit}
+  </select>
 
 </mapper>

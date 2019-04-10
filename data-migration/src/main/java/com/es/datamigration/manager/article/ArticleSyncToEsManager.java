@@ -9,12 +9,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Component
 public class ArticleSyncToEsManager {
+
+    private Integer page = 0;
+    private Integer pageSize = 10000;
 
     @Autowired
     private ServiceImportManager serviceImportManager;
@@ -26,9 +30,22 @@ public class ArticleSyncToEsManager {
      * 同步数据到ES主控方法
      */
     public String syncDataControl() {
-        List<TbArticleDO> articleDOList = tbArticleDOMapper.selectAll();
 
-        for (TbArticleDO tbArticleDO : articleDOList) {
+        //全部查询，数据量如果过大，容易内存溢出，所以改为自动分页查询
+//        List<TbArticleDO> articleDOList = tbArticleDOMapper.selectAll();
+
+        List<TbArticleDO> articleDOResultList = new ArrayList<>();
+        List<TbArticleDO> articleDOList;
+        while (true) {
+            articleDOList= tbArticleDOMapper.selectByPage(page, pageSize);
+            articleDOResultList.addAll(articleDOList);
+            page ++;
+            if (articleDOList.size() < pageSize) {
+                break;
+            }
+        }
+
+        for (TbArticleDO tbArticleDO : articleDOResultList) {
             Map colMap = ConvertMapUtil.convertToMap(tbArticleDO);
             colMap.put(EsConstant.ES_KEY, colMap.get(EsConstant.ID).toString());
             try {

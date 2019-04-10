@@ -12,26 +12,23 @@
 	<!-- 查询字段公共sql -->
 	<sql id="selectAllColumns">
 	    SELECT
-	    <if test="queryFields != null ">
-	 	     <trim prefix="" suffix="" suffixOverrides=",">
-		        <foreach collection="queryFields" item="fi" index="index">
-		          ${ r"${fi},"}
-		        </foreach>
-		      </trim>
-	  	</if>
-	    <if test="queryFields == null ">
 	  		<![CDATA[
 			<#list table.columns as column>
 				 ${column.dbName}<#if column_has_next>,</#if> 
 			</#list>
 			]]>
-	  	</if>
 	     FROM ${table.dbName} record
 	</sql>
 
 	<!-- 不分页查询数据集合-->
 	<select id="selectAll" resultMap="${classNameLower}Mapper" >
 		<include refid="selectAllColumns"/>
+	</select>
+
+	<!-- 分页查询数据集合 -->
+	<select id="selectByPage" resultMap="${classNameLower}Mapper">
+		<include refid="selectAllColumns"/>
+		LIMIT ${ r"#{skip} , #{limit}"}
 	</select>
 
 </mapper>
