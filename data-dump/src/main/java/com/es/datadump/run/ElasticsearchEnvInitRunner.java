@@ -1,11 +1,10 @@
 package com.es.datadump.run;
 
-import com.es.datadump.manager.elasticsearch.ElasticSearchIndexManager;
-import com.es.stone.manager.ElasticSearchDumpManager;
+import com.es.stone.constant.EsConstant;
+import com.es.stone.manager.ElasticSearchIndexManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -27,9 +26,9 @@ public class ElasticsearchEnvInitRunner implements CommandLineRunner {
     private ElasticSearchIndexManager elasticSearchIndexManager;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         logger.info("-------------------------------------检查ES索引状态---------------------------------------------");
-        boolean flag = elasticSearchIndexManager.checkIndex("db_search.tb_article");//特殊索引配置入口,可直接追加
+        boolean flag = elasticSearchIndexManager.checkIndex(EsConstant.EsIndexName.DB_SEARCH_TB_ARTICLE);//特殊索引配置入口,可直接追加
         if (!flag) {
             System.exit(0);
         }

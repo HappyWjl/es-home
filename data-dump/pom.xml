@@ -50,7 +50,7 @@
         </dependency>
         <!-- stone公共项目 -->
 
-        <!-- elasticsearch -->
+        <!-- tbArticle -->
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
@@ -66,7 +66,7 @@
             <artifactId>elasticsearch</artifactId>
             <version>6.3.0</version>
         </dependency>
-        <!-- elasticsearch -->
+        <!-- tbArticle -->
         <!-- canal -->
         <dependency>
             <groupId>com.alibaba.otter</groupId>
@@ -90,6 +90,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>

@@ -1,6 +1,7 @@
 package com.es.stone.manager;
 
 import com.es.stone.constant.EsConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
 import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
@@ -10,17 +11,13 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.util.Map;
 
+@Slf4j
 public class ElasticSearchDumpManager {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(ElasticSearchDumpManager.class);
-    private final static String GENERAL_TYPE = "doc";
 
     @Autowired
     private ElasticSearchInitClientManager elasticSearchInitClientManager;
@@ -47,11 +44,11 @@ public class ElasticSearchDumpManager {
      */
     public void deleteRecordToEs(Map colMap, String index) {
         String esKey = (String) colMap.get(EsConstant.ES_KEY);
-        DeleteRequest request = new DeleteRequest(index, GENERAL_TYPE, esKey);
+        DeleteRequest request = new DeleteRequest(index, EsConstant.EsIndexProperty.GENERAL_TYPE, esKey);
         try {
             elasticSearchInitClientManager.getElasticClient().delete(request);
         } catch (Exception e) {
-            LOGGER.error("ES删除数据失败：" + esKey, e);
+            log.error("ES删除数据失败：" + esKey, e);
         }
     }
 
@@ -62,7 +59,7 @@ public class ElasticSearchDumpManager {
      * @param index
      */
     public void insertOrUpdateToEs(Map colMap, String index) {
-        insertOrUpdateToEsWithType(colMap, index, GENERAL_TYPE, 0);
+        insertOrUpdateToEsWithType(colMap, index, EsConstant.EsIndexProperty.GENERAL_TYPE, 0);
     }
 
     /**
@@ -74,14 +71,15 @@ public class ElasticSearchDumpManager {
     public void insertOrUpdateToEsWithType(Map colMap, String index, String type, int tryCount) {
         String esKey = (String) colMap.get(EsConstant.ES_KEY);
         UpdateRequest request = new UpdateRequest(index, type, esKey);
-        colMap.remove(EsConstant.ES_KEY);//移除主键值
+        //移除主键值
+        colMap.remove(EsConstant.ES_KEY);
         request.doc(colMap);
         request.upsert(colMap);
         RestHighLevelClient client = elasticSearchInitClientManager.getClientFromPool();
         try {
             client.update(request);
         } catch (Exception e) {
-            LOGGER.error("数据同步es异常,重试次数:,{}, esKey:{}, colMap:{}", tryCount, esKey, colMap, e);
+            log.error("数据同步es异常,重试次数:,{}, esKey:{}, colMap:{}", tryCount, esKey, colMap, e);
             if (tryCount < 3) {
                 tryCount++;
                 colMap.put(EsConstant.ES_KEY, esKey);
@@ -106,7 +104,7 @@ public class ElasticSearchDumpManager {
         try {
             elasticSearchInitClientManager.getElasticClient().index(request);
         } catch (Exception e) {
-            LOGGER.error("数据同步es异常：" + key, e);
+            log.error("数据同步es异常：" + key, e);
         }
     }
 
@@ -125,7 +123,7 @@ public class ElasticSearchDumpManager {
         try {
             elasticSearchInitClientManager.getElasticClient().bulk(request);
         } catch (IOException e) {
-            LOGGER.error("数据同步es异常 insertOrUpdateToEs:" + index, e);
+            log.error("数据同步es异常 insertOrUpdateToEs:" + index, e);
         }
     }
 

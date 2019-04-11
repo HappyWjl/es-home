@@ -1,20 +1,21 @@
 package com.es.datamigration.manager;
 
 import com.alibaba.fastjson.JSON;
-import com.es.datamigration.converter.LocationConverter;
+import com.es.stone.converter.LocationConverter;
+import com.es.stone.constant.EsConstant;
 import com.es.stone.manager.ElasticSearchDumpManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+@Slf4j
+@Component
 public class ServiceImportManager {
 
     @Autowired
     private ElasticSearchDumpManager elasticSearchDumpManager;
-
-    private final static Logger logger = LoggerFactory.getLogger(ServiceImportManager.class);
 
     /**
      * 区分索引进行业务关联同步
@@ -24,11 +25,11 @@ public class ServiceImportManager {
      * @return
      * @throws Exception
      */
-    public Map getDateMap(Map colMap, String index) throws Exception {
-        if ("db_search.tb_ts".equals(index)) {
+    public Map getDateMap(Map colMap, String index) {
+        if (EsConstant.EsIndexName.DB_SEARCH_TB_TS.equals(index)) {
             //判断是哪种特殊索引，根据需求，处理数据，再 存入/更新 到es
             txListInfoDump(colMap, index);
-        } else if ("db_search.tb_article".equals(index)) {
+        } else if (EsConstant.EsIndexName.DB_SEARCH_TB_ARTICLE.equals(index)) {
             //判断是否是article索引，根据需求，处理数据，再 存入/更新 到es
             articleListInfoDump(colMap, index);
         } else {
@@ -44,7 +45,7 @@ public class ServiceImportManager {
      * @param index
      */
     protected void txListInfoDump(Map colMap, String index) {
-        logger.info("ServiceImportManager.txListInfoDump colMap:{}", JSON.toJSONString(colMap));
+        log.info("ServiceImportManager.txListInfoDump colMap:{}", JSON.toJSONString(colMap));
         //此处可进行特殊逻辑处理，根据需求来
         elasticSearchDumpManager.insertOrUpdateToEs(colMap, index);
     }

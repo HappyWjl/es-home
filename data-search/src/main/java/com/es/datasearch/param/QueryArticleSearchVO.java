@@ -2,6 +2,9 @@ package com.es.datasearch.param;
 
 import java.io.Serializable;
 
+/**
+ * 搜索传入对象
+ */
 public class QueryArticleSearchVO implements Serializable {
 
     // 每页大小

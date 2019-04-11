@@ -1,23 +1,21 @@
 package com.es.stone.manager;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-@Component
+@Slf4j
 @Configuration
 public class ElasticSearchInitClientManager {
-    private final static Logger logger = LoggerFactory.getLogger(ElasticSearchInitClientManager.class);
+
     private final static int poolSize = 50;
     private static volatile int idleconnect;
     private static BlockingQueue<RestHighLevelClient> pool = null;
@@ -33,7 +31,7 @@ public class ElasticSearchInitClientManager {
                 try {
                     client = new RestHighLevelClient(RestClient.builder(httpHosts));
                 } catch (Exception e) {
-                    logger.error("创建es客户端对象异常:", e);
+                    log.error("创建es客户端对象异常:", e);
                 }
             }
         }
@@ -45,7 +43,7 @@ public class ElasticSearchInitClientManager {
         List<HttpHost> hostList = new ArrayList<>();
         HttpHost[] hostArr = null;
         if (arrServer.length < 1) {
-            logger.error("ES服务器配置不正确，请检查！");
+            log.error("ES服务器配置不正确，请检查！");
             return null;
         }
         for (String server : arrServer) {
@@ -54,11 +52,11 @@ public class ElasticSearchInitClientManager {
                 try {
                     hostList.add(new HttpHost(ipAndPort[0], Integer.valueOf(ipAndPort[1]), "http"));
                 } catch (Exception e) {
-                    logger.error("ES服务器地址配置不正确!", e);
+                    log.error("ES服务器地址配置不正确!", e);
                     return null;
                 }
             } else {
-                logger.error("ES服务器配置的ip与port不正确。错误值:" + ipAndPort.toString());
+                log.error("ES服务器配置的ip与port不正确。错误值:" + ipAndPort.toString());
                 return null;
             }
         }
@@ -84,7 +82,7 @@ public class ElasticSearchInitClientManager {
             try {
                 pool.put(new RestHighLevelClient(RestClient.builder(httpHosts)));
             } catch (InterruptedException e) {
-                logger.error("同步服务初始化ES连接池失败，退出！", e);
+                log.error("同步服务初始化ES连接池失败，退出！", e);
                 System.exit(0);
             }
         }
@@ -102,7 +100,7 @@ public class ElasticSearchInitClientManager {
         try {
             return this.pool.take();
         } catch (InterruptedException e) {
-            logger.error("从线程池中获取客户端异常！", e);
+            log.error("从线程池中获取客户端异常！", e);
         } finally {
             this.idleconnect = this.pool.size();
         }
@@ -114,7 +112,7 @@ public class ElasticSearchInitClientManager {
             this.pool.put(client);
             this.idleconnect = this.pool.size();
         } catch (InterruptedException e) {
-            logger.error("同步服务断开连接异常！", e);
+            log.error("同步服务断开连接异常！", e);
         }
     }
 

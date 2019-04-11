@@ -1,0 +1,31 @@
+server:
+  port: 8084
+
+es:
+  client:
+    servers: localhost:9200
+
+canal:
+  client:
+    servers: 127.0.0.1:11111
+    cluser: false
+    destination: articlesubscibe
+
+local:
+  jdbc:
+    driver: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/db_search?autoReconnect=true&amp;useUnicode=true&amp;characterset=utf8mb4
+    username: root
+    password: root
+
+#自动生成代码配置#
+
+#生成的包名
+basePackage: com.es.
+
+#输出路径，当输出地址为null时，文件放到固定项目目录下，否则输出到桌面指定文件夹下
+outRoot:
+
+#需要移除的表名前缀,使用逗号进行分隔多个前缀,可以没值
+#比如表名: tb_article，想将表名前缀移除，填入值: tb_
+tableRemovePrefixes:
