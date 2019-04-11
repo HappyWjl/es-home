@@ -3,7 +3,5 @@
 
 项目讲解地址：https://blog.csdn.net/u012888052/article/details/81876152
 
-注：代码最新版本在 easy-search-V1.0 分支 master分支代码对应博客讲解。
-
 作者：Happy王子乐
 QQ：820155406
